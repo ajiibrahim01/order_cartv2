@@ -15,7 +15,7 @@ import com.shop.dto.OrderDto;
 import com.shop.entity.Order;
 import com.shop.dto.OrderItemDto;
 import com.shop.entity.OrderItem;
-
+import com.shop.entity.Product;
 @ApplicationScoped
 public class OrderService {
 	
@@ -31,11 +31,11 @@ public class OrderService {
 			pushedOrder.setCustomerName(order.getCustomerName());
 			for(OrderItemDto item : order.getOrders()) {
 				OrderItem orderItem = new OrderItem();
-				orderItem.setId(UUID.randomUUID().toString());
-				orderItem.setName(item.getName());
-				orderItem.setPrice(item.getPrice());
+				Product product = em.find(Product.class, item.getId());
+				orderItem.setOrderItemid(UUID.randomUUID().toString());
 				orderItem.setQuantity(item.getQuantity());
-				orderItem.setType(item.getType());
+				orderItem.setTotalPrice(item.itemPrice());
+				orderItem.setProduct(product);
 				pushedOrder.addOrder(orderItem);
 			}
 			em.persist(pushedOrder);

@@ -160,11 +160,7 @@ public class ShopController extends HttpServlet {
 			System.out.println("executed submit");
 			HttpSession session = request.getSession();
 			OrderDto order = (OrderDto) session.getAttribute("order_cart");
-			User user = (User) session.getAttribute("user_data");
-			UserRepo repo = new UserRepo();
-			int userId = repo.getUserId(user.getName());
-			order.setCustomerId(userId);
-			order.setCustomerName(user.getName());
+
 			System.out.println("customer id ,"+ order.getCustomerId());
 			int result = service2.submitOrder(order);
 			if(result == 1) {
