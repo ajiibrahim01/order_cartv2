@@ -11,7 +11,8 @@
 </head>
 <body>
 	<a href="list">Go/Back to List</a>
-	
+	<br><br>
+	<a href="/shop2/auth/profile">Go Back to Profile</a>
 
 	<table border="1" width="50%" align="center">
 	<caption><h4>Order Cart</h4></caption>

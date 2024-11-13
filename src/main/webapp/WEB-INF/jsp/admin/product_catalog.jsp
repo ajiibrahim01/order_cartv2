@@ -29,7 +29,9 @@
             <td>${product.price}</td>
             <td><a href="view/${product.id}">View</a></td>
         </tr>
-    </c:forEach>
+    </c:forEach> 
 </table>
+ 	<br><br>
+ 	<a href="/shop2/auth/profile">Go Back to Profile</a>
 </body>
 </html>

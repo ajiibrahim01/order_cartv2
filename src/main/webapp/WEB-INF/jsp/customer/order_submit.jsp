@@ -8,5 +8,6 @@
 </head>
 <body>
 	<h1>THANK YOU FOR ORDER</h1>
+	<a href="/shop2/auth/profile">Go Back to Profile</a>
 </body>
 </html>

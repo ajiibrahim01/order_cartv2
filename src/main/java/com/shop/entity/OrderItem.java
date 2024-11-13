@@ -25,7 +25,7 @@ public class OrderItem  {
     @Column(name = "total_price")
     private double totalPrice;
     @ManyToOne
-    @JoinColumn(name = "product_id")  // Foreign key in the OrderItem table
+    @JoinColumn(name = "product_id")  
     private Product product;
     
     @ManyToOne

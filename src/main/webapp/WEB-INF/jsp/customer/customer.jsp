@@ -16,5 +16,9 @@
 	</c:if>
 		<a href="profile/customer/list">Product List</a>
 		<a href="profile/customer/cart">Order Cart</a>
+		<br><br>
+		<form action="logout" method="POST">
+        <button type="submit">Logout</button>
+    </form>
 </body>
 </html>

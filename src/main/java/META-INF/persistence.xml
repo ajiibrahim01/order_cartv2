@@ -6,7 +6,7 @@
 		<class>com.shop.entity.Order</class>
 		<class>com.shop.entity.OrderItem</class>
 		<properties>
-			<property name="javax.persistence.schema-generation.database.action" value="create"/>
+			<property name="javax.persistence.schema-generation.database.action" value="update"/>
 		</properties>
 		 
 	</persistence-unit>

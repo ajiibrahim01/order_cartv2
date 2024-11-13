@@ -27,14 +27,17 @@ public class AdminFilter extends HttpFilter implements Filter {
         HttpSession session = httpRequest.getSession(false);
         User user = (User) session.getAttribute("user_data");
         
-        boolean admin = (user.getName().equals("admin"));
-        
-        if(admin == true) {
-        	System.out.println("admin filter executed");
-        	chain.doFilter(request, response);
-        }else {
-        	System.out.println("not admin");
+        if(user.getName()!= null) {
+        	 boolean admin = (user.getName().equals("admin"));
+             
+             if(admin == true) {
+             	System.out.println("admin filter executed");
+             	chain.doFilter(request, response);
+             }else {
+             	System.out.println("not admin");
+             }
         }
+       
 	}
 
 

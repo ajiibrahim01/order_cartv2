@@ -33,5 +33,7 @@
      
         <button type="submit">Add Product</button>
     </form>
+    <br><br>
+    <a href="/shop2/auth/profile">Go Back to Profile</a>
 </body>
 </html>

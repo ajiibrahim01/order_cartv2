@@ -17,20 +17,19 @@ import javax.servlet.http.HttpSession;
 import com.shop.model.*;
 import com.shop.service.OrderService;
 import com.shop.service.ProductService;
-
 import com.shop.dto.*;
 import com.shop.entity.Product;
 import com.shop.entity.User;
 
-@WebServlet(urlPatterns={"/login","/auth","/auth/profile","/auth/profile/admin/*","/auth/profile/customer/*","/auth/profile/admin/product/save"})
+@WebServlet(urlPatterns={"/login","/auth/logout","/auth","/auth/profile","/auth/profile/admin/*","/auth/profile/customer/*","/auth/profile/admin/product/save"})
 public class ShopController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	@Inject
-	ProductService service;
+	ProductService productService;
 	
 	@Inject
-	OrderService service2;
+	OrderService orderService;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -46,7 +45,7 @@ public class ShopController extends HttpServlet {
 		if("/login".equals(path)) {
 			RequestDispatcher dispatch = request.getRequestDispatcher("/login.jsp");
             dispatch.forward(request, response);
-		}else if("/auth/profile".equals(path)){
+		}if("/auth/profile".equals(path)){
 			HttpSession session = request.getSession();
 			User user = (User)session.getAttribute("user_data");
 			String role = user.getRole();
@@ -60,19 +59,19 @@ public class ShopController extends HttpServlet {
 				RequestDispatcher dispatch = request.getRequestDispatcher("/WEB-INF/jsp/customer/customer.jsp");
 				dispatch.forward(request, response);
 			}
-		}else if (("/auth/profile/admin").equals(path)) {
+		}if (("/auth/profile/admin").equals(path)) {
 			if("/register".equals(info)) {
 				RequestDispatcher dispatch = request.getRequestDispatcher("/WEB-INF/jsp/admin/product_register.jsp");
 				dispatch.forward(request, response);
 			}else if("/catalog".equals(info)) {
 				
-				List<ProductDto> products = service.findAll();
+				List<ProductDto> products = productService.findAll();
             	request.setAttribute("product_list", products);
 				RequestDispatcher dispatch = request.getRequestDispatcher("/WEB-INF/jsp/admin/product_catalog.jsp");
 				dispatch.forward(request, response);
 			}else if(("/view/"+getNumber).equals(info)) {
 				
-                ProductDto productById = service.findById(String.valueOf(getNumber));
+                ProductDto productById = productService.findById(String.valueOf(getNumber));
                 request.setAttribute("product_by_id", productById);
 				
 				RequestDispatcher dispatch = request.getRequestDispatcher("/WEB-INF/jsp/admin/product_view.jsp");
@@ -81,7 +80,7 @@ public class ShopController extends HttpServlet {
 		}else if (("/auth/profile/customer").equals(path)) {
 			if("/list".equals(info)) {
 				System.out.println("executed list");
-				List<ProductDto> products = service.findAll();
+				List<ProductDto> products = productService.findAll();
             	request.setAttribute("product_list", products);
             	
 				RequestDispatcher dispatch = request.getRequestDispatcher("/WEB-INF/jsp/customer/product_list.jsp");
@@ -130,9 +129,22 @@ public class ShopController extends HttpServlet {
 			String price = request.getParameter("product_price");
 
 			Product product = new Product(id,name,type,Double.parseDouble(price));
-			service.addProduct(product);
+			productService.addProduct(product);
 			response.sendRedirect(request.getContextPath()+"/auth/profile/admin/catalog");
 			
+		}else if (("/auth/profile/admin/view/save/"+getNumber).equals(path+info)) {
+			String id = request.getParameter("product_id");
+			String name = request.getParameter("product_name");
+			String type = request.getParameter("product_type");
+			String price = request.getParameter("product_price");
+			
+			Product product = new Product(id,name,type,Double.parseDouble(price));
+
+			int result = productService.updateProduct(product);
+			System.out.println("result " + result);
+			if(result == 1) {
+				response.sendRedirect("/shop2"+path+"/catalog");
+			}
 		}else if (("/auth/profile/customer/cart").equals(path+info)) {
 			System.out.println("executed cart post");
 			String customerName = request.getParameter("customer_name");
@@ -162,10 +174,17 @@ public class ShopController extends HttpServlet {
 			OrderDto order = (OrderDto) session.getAttribute("order_cart");
 
 			System.out.println("customer id ,"+ order.getCustomerId());
-			int result = service2.submitOrder(order);
+			int result = orderService.submitOrder(order);
 			if(result == 1) {
+				session.removeAttribute("order_cart");
 			response.sendRedirect(request.getContextPath()+"/auth/profile/customer/submit");
 			}
+		}else if("/auth/logout".equals(path)) {
+			HttpSession session = request.getSession();
+			session.invalidate();
+			String contextPath = request.getContextPath();
+			response.sendRedirect(contextPath+"/login");
+
 		}
 	}
 }

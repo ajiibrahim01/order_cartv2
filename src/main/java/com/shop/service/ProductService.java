@@ -82,6 +82,7 @@ public class ProductService {
 			tempProduct.setName(product.getName());
 			tempProduct.setType(product.getType());
 			tempProduct.setPrice(product.getPrice());
+			em.merge(tempProduct);
 			result = 1;
 			return result;
         } catch (Exception e) {

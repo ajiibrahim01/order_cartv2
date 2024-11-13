@@ -14,5 +14,10 @@
 	</c:if>
 	<a href="profile/admin/register">Add Product</a>
 	<a href="profile/admin/catalog">Product Catalog</a>
+	
+	<br><br>
+		<form action="logout" method="POST">
+        <button type="submit">Logout</button>
+    </form>
 </body>
 </html>
